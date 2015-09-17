@@ -839,6 +839,20 @@ expected closing tag of foo
   }
 
   @UnitTest
+  def issue76: Unit = {
+    val pp = new PrettyPrinter(9999,2)
+    val x = <foo>{"hi\nthere"}</foo>
+    assertEquals("<foo>hi\nthere</foo>", x.toString)
+    assertEquals("<foo>hi there</foo>", pp.format(x))
+    val y = PCData("hi\nthere")
+    assertEquals("<![CDATA[hi\nthere]]>", y.toString)
+    assertEquals("<![CDATA[hi\nthere]]>", pp.format(y))
+    val z = <foo>{PCData("hi\nthere")}</foo>
+    assertEquals("<foo><![CDATA[hi\nthere]]></foo>", z.toString)
+    assertEquals("<foo><![CDATA[hi\nthere]]></foo>", pp.format(z))
+  }
+
+  @UnitTest
   def nodeSeqNs: Unit = {
     val x = {
       <x:foo xmlns:x="abc"/><y:bar xmlns:y="def"/>
