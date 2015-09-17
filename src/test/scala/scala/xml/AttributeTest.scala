@@ -7,6 +7,7 @@ import org.junit.runners.JUnit4
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 
 class AttributeTest {
   @Test
@@ -50,6 +51,35 @@ class AttributeTest {
 
     val z = new UnprefixedAttribute("foo", None, x)
     assertEquals(None, z.get("foo"))
+  }
+
+  @Test
+  def attributeOrder: Unit = {
+    val x = <x y="1" z="2"/>
+    assertEquals("""<x y="1" z="2"/>""", x.toString)
+  }
+
+  @Test
+  def attributesFromString: Unit = {
+    val input = """<x y="1" z="2"/>"""
+    val doc = XML.loadString(input)
+    assertEquals(input, doc.toString)
+  }
+
+  @Test
+  def attributesAndNamespaceFromString: Unit = {
+    val input = """<x xmlns:w="w" y="1" z="2"/>"""
+    val doc = XML.loadString(input)
+    assertNotEquals(input, doc.toString)
+    val input2 = """<x y="1" z="2" xmlns:w="w"/>"""
+    val doc2 = XML.loadString(input2)
+    assertEquals(input2, doc2.toString)
+  }
+
+  @Test(expected=classOf[SAXParseException])
+  def attributesFromStringWithDuplicate: Unit = {
+    val input = """<elem one="test" one="test1" two="test2" three="test3"></elem>"""
+    val doc = XML.loadString(input)
   }
 
   @Test
