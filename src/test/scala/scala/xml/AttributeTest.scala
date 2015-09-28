@@ -7,6 +7,7 @@ import org.junit.runners.JUnit4
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import JUnitAssertsForXML.{assertEquals => assertXML}
 
 class AttributeTest {
   @Test
@@ -55,8 +56,8 @@ class AttributeTest {
   @Test
   def attributeToString: Unit = {
     val expected: String = """<b x="&amp;"/>"""
-    assertEquals(expected, (<b x="&amp;"/>).toString)
-    assertEquals(expected, (<b x={"&"}/>).toString)
+    assertXML(expected, <b x="&amp;"/>)
+    assertXML(expected, <b x={"&"}/>)
   }
 
   @Test

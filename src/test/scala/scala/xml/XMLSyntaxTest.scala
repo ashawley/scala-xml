@@ -7,6 +7,7 @@ import org.junit.runners.JUnit4
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import JUnitAssertsForXML.{assertEquals => assertXML}
 
 class XMLSyntaxTest {
 
@@ -43,11 +44,11 @@ class XMLSyntaxTest {
     assertEquals(27, handle[Int](xf))
 
     val xg = <hello>{ List(1,2,3,4) }</hello>
-    assertEquals("<hello>1 2 3 4</hello>", xg.toString)
+    assertXML("<hello>1 2 3 4</hello>", xg)
     assertFalse(xg.child.map(_.isInstanceOf[Text]).exists(identity))
 
     val xh = <hello>{ for(x <- List(1,2,3,4) if x % 2 == 0) yield x }</hello>
-    assertEquals("<hello>2 4</hello>", xh.toString)
+    assertXML("<hello>2 4</hello>", xh)
     assertFalse(xh.child.map(_.isInstanceOf[Text]).exists(identity))
   }
 
@@ -80,7 +81,7 @@ class XMLSyntaxTest {
     }
     val parsed = parser.element(TopScope) // parse the source as element
     // alternatively, we could call document()
-    assertEquals("<a>Š</a>", parsed.toString)
+    assertXML("<a>Š</a>", parsed)
   }
 
 }

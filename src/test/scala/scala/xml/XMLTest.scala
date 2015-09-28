@@ -9,6 +9,7 @@ import org.junit.runners.JUnit4
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import JUnitAssertsForXML.{assertEquals => assertXML}
 import scala.xml.parsing.ConstructingParser
 import java.io.StringWriter
 import java.io.BufferedOutputStream
@@ -339,7 +340,7 @@ class XMLTest {
   def groupNode = {
     val zx1: Node = Group { <a/><b/><c/> }
     val zy1: Node = <f>{ zx1 }</f>
-    assertEquals("<f><a/><b/><c/></f>", zy1.toString)
+    assertXML("<f><a/><b/><c/></f>", zy1)
 
     assertEquals("<a/><f><a/><b/><c/></f><a/><b/><c/>",
       Group { List(<a/>, zy1, zx1) }.toString)
