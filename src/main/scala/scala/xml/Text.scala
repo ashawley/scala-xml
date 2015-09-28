@@ -39,4 +39,6 @@ object Text {
     case x: Text => Some(x.data)
     case _       => None
   }
+  def append(t1: Text, t2: Text) = 
+    TextBuffer.fromString(t1.text + t2.text).toText
 }

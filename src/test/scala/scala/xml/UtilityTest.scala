@@ -32,6 +32,24 @@ class UtilityTest {
   }
 
   @Test
+  def appendAdjacentText = {
+    val ab = Seq(Text("a"), Text("b"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("ab"))), Utility.appendAdjacentText(ab))
+
+    val ab2 = Seq(Text("a "), Text("b"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("a b"))), Utility.appendAdjacentText(ab2))
+
+    val ab3 = Seq(Text("a "), Text(" b"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("a  b"))), Utility.appendAdjacentText(ab3))
+
+    val ab4 = Seq(Text("a"), Text(" "), Text("b"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("a b"))), Utility.appendAdjacentText(ab4))
+
+    val xy = <x>a<y>b</y></x>
+    assertEquals(NodeSeq.fromSeq(Seq(Text("a"), <y>b</y>)), Utility.appendAdjacentText(xy.child))
+  }
+
+  @Test
   def aposEscaping: Unit = {
     val z = <bar>''</bar>
     val z1 = z.toString

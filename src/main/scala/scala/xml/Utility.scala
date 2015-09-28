@@ -46,9 +46,38 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trim(x: Node): Node = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = child flatMap trimProper
+      val children = appendAdjacentText(child) flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
   }
+
+  private[xml] def appendAdjacentTextAndEntity(nodes: Seq[Node]) = 
+    coalesce[Text](nodes.map(entityRefsToText))(areText)(Text.append _)
+
+  /** Adjoin adjacent `Text` nodes by appending them together. */
+  private[xml] def appendAdjacentText(nodes: Seq[Node]): Seq[Node] =
+    coalesce[Text](nodes)(areText)((t1, t2) => Text(t1.text + t2.text))
+
+  /** Predicate whether two nodes are of type `Text`. */
+  private def areText(t1: Node, t2: Node) = (t1, t2) match {
+    case (t1: Text, t2: Text) => true
+    case _ => false
+  }
+
+  /** Convert an `EntityRef` node to a `Text` node. */
+  private def entityRefsToText(n: Node): Node = n match {
+    case e: EntityRef =>  Text(e.text)
+    case _ => n
+  }
+
+  /** Iterate `ns` and combine with `f` `when` predicate is true. */
+  def coalesce[T <: Node](ns: Seq[Node])(when: (T, T) => Boolean)(f: (T, T) => Seq[Node])(implicit tag: scala.reflect.ClassTag[T]): Seq[Node] =
+    ns.foldRight(NodeSeq.Empty) {
+      case (n: T, nn) => nn.headOption match {
+        case Some(n1: T) if when(n, n1) => f(n, n1) ++ nn.tail
+        case _ => Seq(n) ++ nn
+      }
+      case (n: Node, nn) => Seq[Node](n) ++ nn
+    }
 
   /**
    * trim a child of an element. `Attribute` values and `Atom` nodes that
@@ -59,7 +88,7 @@ object Utility extends AnyRef with parsing.TokenTests {
       val children = child flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
     case Text(s) =>
-      new TextBuffer().append(s).toText
+      TextBuffer.fromString(s).toText
     case _ =>
       x
   }
