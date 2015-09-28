@@ -32,6 +32,25 @@ class UtilityTest {
   }
 
   @Test
+  def issue73AdjacentSpaceInFirst: Unit = {
+    val x = <div>{Text("My name is ")}{Text("Harry")}</div>
+    assertEquals(<div>My name is Harry</div>, Utility.trim(x))
+
+  }
+
+  @Test
+  def issue73AdjacentSpaceInSecond: Unit = {
+    val x = <div>{Text(" My name is")}{Text(" Harriet ")}</div>
+    assertEquals(<div>My name is Harriet</div>, Utility.trim(x))
+  }
+
+  @Test
+  def issue73IsolatedSpaceIsLost: Unit = {
+    val data = <data>{Text("a")}{Text(" ")}{Text("b")}</data>
+    assertEquals(<data>a b</data>, Utility.trim(data))
+  }
+
+  @Test
   def aposEscaping: Unit = {
     val z = <bar>''</bar>
     val z1 = z.toString
