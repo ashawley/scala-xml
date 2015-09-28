@@ -47,6 +47,13 @@ class UtilityTest {
   }
 
   @Test
+  def issue77: Unit = {
+    val x = <x>a &amp; b</x>
+
+    assertEquals("<x>a &amp; b</x>", Utility.trim(x).toString)
+  }
+
+  @Test
   def issue777: Unit = {
     <hi>
       <there/>
