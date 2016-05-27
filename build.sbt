@@ -37,3 +37,5 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
 libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml*")
 
 mimaPreviousVersion := Some("1.0.5")
+
+enablePlugins(JmhPlugin)
