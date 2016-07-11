@@ -134,7 +134,7 @@ class PrettyPrinter(width: Int, step: Int) {
   }
 
   protected def fits(test: String) =
-    test.length < width - cur
+    test.length <= width - cur
 
   private def doPreserve(node: Node) =
     node.attribute(XML.namespace, XML.space).map(_.toString == XML.preserve) getOrElse false

@@ -836,6 +836,16 @@ expected closing tag of foo
   }
 
   @UnitTest
+  def prettyPrintWidth: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2)
+    val x = <a/>
+    // What it did:
+    // assertEquals("<a>\n</a>", pp.format(x))
+    // What it should do:
+    assertEquals("<a/>", pp.format(x))
+  }
+
+  @UnitTest
   def issue28: Unit = {
     val x = <x:foo xmlns:x="gaga"/>
     // val ns = new NamespaceBinding("x", "gaga", sc)
