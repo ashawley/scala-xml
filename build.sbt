@@ -135,12 +135,13 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     libraryDependencies += "junit" % "junit" % "4.12" % Test,
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.9" % Test,
+    libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.13.2" % Test,
     libraryDependencies ++= {
       if (isDotty.value)
         Seq()
       else
         Seq(("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test).exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}"))
-    }
+    },
   )
   .jsSettings(
     // Scala.js cannot run forked tests
