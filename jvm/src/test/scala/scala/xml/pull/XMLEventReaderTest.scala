@@ -192,4 +192,17 @@ class XMLEventReaderTest {
 
     assertTrue(er.isEmpty)
   }
+
+  @Test
+  def largeSourceTest = {
+    val src = new Source {
+      val str = "<x><y z=''/>\n" // Non-closing tag
+      lazy val elChars: Stream[Char] = str.toList.toStream #::: elChars
+      protected val iter = elChars.toIterator
+    }
+    val reader = new XMLEventReader(src)
+    reader.take(100)
+    reader.stop
+    src.close
+  }
 }
