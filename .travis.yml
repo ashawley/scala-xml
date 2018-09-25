@@ -15,7 +15,7 @@ jdk:
 
 scala:
   - 2.11.12
-  - 2.12.6
+  - 2.12.7
   - 2.13.0-M3
 
 env:
@@ -42,7 +42,7 @@ matrix:
       jdk: oraclejdk8
     - scala: 2.11.12
       jdk: oraclejdk10
-    - scala: 2.12.6
+    - scala: 2.12.7
       jdk: openjdk6
     - scala: 2.13.0-M3
       jdk: openjdk6
