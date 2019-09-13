@@ -41,6 +41,8 @@ install:
 
 script:
   - admin/build.sh
+  - find $HOME/.cache/coursier -type f | head
+  - find $HOME/.coursier -type f | head
 
 before_cache:
   - find $HOME/.sbt -name "*.lock" | xargs rm
